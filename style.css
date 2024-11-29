@@ -1,0 +1,113 @@
+*,
+*::after,
+*::before{
+
+    box-sizing: border-box;
+}
+*{
+    margin: 0;
+}
+:root{
+    --spacing-regular:16px;
+    --spacing-medium:8px;
+}
+.container{
+    width: 400px;
+    margin: auto;
+    border: 1px solid;
+    display: grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-areas: 
+    "current current"
+    "hourly hourly"
+    "fiveday fiveday"
+    "feellike humidity";
+    gap: var(--spacing-regular);
+    padding: var(--spacing-regular);
+    border-radius: var(--spacing-medium);
+}
+#current_forecaste{
+    grid-area: current;
+    display: grid;
+    place-content: center;
+}
+#hourly_forecast{
+   
+    /* display: grid;
+    place-content: center; */
+    display: flex;
+    /* flex-wrap: wrap; */
+   
+}
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+    gap: 8px;
+}
+
+#city-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+.hourly_forecast1{
+    
+    grid-area: hourly;
+    overflow: hidden;
+}
+.hourly_forecast1>h2{
+  margin-left: 20%;
+}
+#five_days_forecaste{
+    grid-area: fiveday;
+    display: grid;
+    place-content: center;
+}
+#feel_free{
+    grid-area: feellike;
+}
+#humidity{
+    grid-area: humidity;
+}
+.container>article{
+    border: 1px solid;
+    padding: var(--spacing-regular);
+    border-radius: var(--spacing-medium);
+}
+#five_days_forecaste {
+    grid-area: fiveday;
+    display: grid;
+    gap: var(--spacing-medium);
+    padding: var(--spacing-regular);
+}
+.daily-forecast {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+    padding: var(--spacing-medium);
+    border-radius: var(--spacing-medium);
+}
+.daily-forecast img {
+    width: 40px;
+    height: 40px;
+}
+
+    

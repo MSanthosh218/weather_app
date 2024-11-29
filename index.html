@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather forcasteing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- <script src="script.js"></script> -->
+    <div class="container">
+        <article id="current_forecaste">
+            <h2>name</h2>
+            <p class="temp">temp</p>
+            <p class="description">description</p>
+            <p class="min_max_temp">min_max_temp</p>
+        </article>
+        <article class="hourly_forecast1">
+            <h2>hourly_forecast</h2>
+            <article id="hourly_forecast">
+                <!-- <h2>hourly_forecast</h2> -->
+                <!-- <p>time</p>
+                <p>icon</p>
+                <p>temp</p> -->
+            </article>
+        </article>
+        <article id="five_days_forecaste">
+            <h2>weekly_forecast</h2>
+            <p>icons</p>
+            <p>high</p>
+            <p>low</p>
+        </article>
+        <article id="feel_free">
+            <h2>Feels_like</h2>
+            <p>29</p>
+        </article>
+        <article id="humidity">
+            <h2>humidity</h2>
+            <p>60%</p>
+        </article>
+    </div>
+    <script>
+        const API_KEY =  "44e712238185644766af6ce7138315d9";
+const ENDPOINTS = {
+    CURRENT_FORECAST : "https://api.openweathermap.org/data/2.5/weather",
+    GEOCODING: "https://api.openweathermap.org/geo/1.0/direct",
+    HOURLY_FORECAST : "https://api.openweathermap.org/data/2.5/forecast"
+
+};
+
+const latAndLon = async (cityName) => {
+    const res = await fetch(`${ENDPOINTS.GEOCODING}?q=${cityName}&limit=1&appid=${API_KEY}`);
+    const data =await res.json();
+    console.log(data);
+    try{
+    
+    const lat = data[0].lat;
+    const lon = data[0].lon;
+    console.log(lat ,lon);
+    return { lat, lon };
+}
+catch(error){
+    console.error("Error fetching lat and long:", error);
+}
+} 
+const hourlyForecastes = async (cityName) => {
+    // const hourlyForecastes = async (cityName) => {
+        try {
+           
+            const { lat, lon } = await latAndLon(cityName);
+    
+            const resp1 = await fetch(`${ENDPOINTS.HOURLY_FORECAST}?q=${cityName}&appid=${API_KEY}&units=metric`);
+
+            
+            const data1 = await resp1.json();
+    
+          
+            console.log("Hourly Forecast Data:", data1);
+
+            const hourlyDataContainer = document.getElementById("hourly_forecast");
+            hourlyDataContainer.innerHTML = "";
+            data1.list.forEach((hourly) => {
+                const time = new Date(hourly.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const temp = hourly.main.temp.toFixed(1);
+                const desc = hourly.weather[0].description;
+                const icon = `http://openweathermap.org/img/wn/${hourly.weather[0].icon}.png`;
+                // console.log(time);
+                const hourlyElement = document.createElement("div")
+                hourlyElement.innerHTML = `  
+                               
+                                <p>${time}</p>
+                                <img src="${icon}" alt="${desc}">
+                                <p>${temp}°C</p>`;
+
+                hourlyDataContainer.appendChild(hourlyElement)
+                
+            }); 
+        }
+        catch(error){
+            console.error("Error fetching lat and long:", error);
+
+        }
+    };
+
+
+
+
+const loadCurrentForecast = async() =>{
+    const cityName="Hyderabad";
+    const response = await fetch(`${ENDPOINTS.CURRENT_FORECAST}?q=${cityName}&appid=${API_KEY}&units=metric`)
+    const data = await response .json()
+    console.log(data);
+ 
+   
+
+
+    document.querySelector("#current_forecaste h2").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML = `temperature : ${data.main.temp} \u00B0C`;
+    document.querySelector(".description").innerHTML = `description : ${data.weather[0].description}`;
+    document.querySelector(".min_max_temp").innerHTML = `min-temp : ${data.main.temp_min} / max-temp : ${data.main.temp_max}`;
+    document.querySelector("#feel_free p").innerHTML = `${data.main.feels_like} \u00B0C`;
+    document.querySelector("#humidity p").innerHTML = `${data.main.humidity} %`;
+
+
+    
+
+}
+// const weekly_Forecaste
+
+loadCurrentForecast()
+
+// latAndLon("Hyderabad")
+hourlyForecastes("Hyderabad")
+
+    </script>
+</body>
+</html>
